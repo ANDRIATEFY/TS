@@ -31,7 +31,7 @@ termux-setup-storage
 
 # Mise à jour pip et installation de base
 echo -e "\e[1;34m[•] Mise à jour de pip et bibliothèques essentielles...\e[0m"
-pip install --upgrade pip setuptools wheel filelock
+pip install --upgrade pip setuptools wheel
 
 # Liste des modules à vérifier/installer
 PIP_MODULES=(telethon requests rich termcolor pillow instagrapi instaloader)
