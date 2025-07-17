@@ -34,7 +34,7 @@ echo -e "\e[1;34m[•] Mise à jour de pip et bibliothèques essentielles...\e[0
 pip install --upgrade pip setuptools wheel filelock
 
 # Liste des modules à vérifier/installer
-PIP_MODULES=(telethon requests rich termcolor pillow cryptography instagrapi instaloader)
+PIP_MODULES=(telethon requests rich termcolor pillow instagrapi instaloader)
 
 # Installation conditionnelle des modules Python
 for module in "${PIP_MODULES[@]}"; do
