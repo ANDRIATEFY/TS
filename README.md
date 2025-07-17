@@ -3,7 +3,7 @@
 
 ```
 pkg install git
-git clone
+git clone https://github.com/ANDRIATEFY/TS.git
 chmod +x *
 ./install.sh
 cd TS
