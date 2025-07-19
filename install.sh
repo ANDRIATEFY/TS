@@ -3,17 +3,13 @@
 clear
 echo -e "\e[1;36m🔧 Installation complète de l'environnement TS sous Termux (avec vérification des modules)\e[0m"
 
-# Autorisation 
-echo -e "\e[1;34m[•] Autorisation du stockage...\e[0m"
-termux-setup-storage
-
 # Mise à jour
 echo -e "\e[1;34m[•] Mise à jour Termux...\e[0m"
 pkg update -y && pkg upgrade -y
 
 # eto aho no milance an sys
 echo -e "\e[1;34m[•] Installation des paquets système requis...\e[0m"
-pkg install -y clang python fftw libzmq freetype libpng pkg-config libjpeg-turbo zlib sqlite ncurses-utils rust
+pkg install -y clang python fftw libzmq freetype libpng pkg-config libjpeg-turbo zlib sqlite ncurses-utils rust termux-tools
 
 echo -e "\e[1;34m[•] Mise à jour pip, setuptools, wheel...\e[0m"
 pip install --upgrade pip setuptools wheel
@@ -68,6 +64,9 @@ for module in "${!MODULES[@]}"; do
         fi
     fi
 done
+# Autorisation 
+echo -e "\e[1;34m[•] Autorisation du stockage...\e[0m"
+termux-setup-storage
 
 python -c "from instagrapi import Client; print('✅ instagrapi fonctionnel')" 2>/dev/null
 
