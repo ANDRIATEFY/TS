@@ -1,110 +1,53 @@
-#!/data/data/com.termux/files/usr/bin/bash
+pkg update -y
+pkg upgrade -y
 
-clear
-echo -e "\e[1;36m🔧 Installation complète de l'environnement TS sous Termux (avec vérification des modules)\e[0m"
+# Installation des outils de base avec vérification
+echo -e "\033[1;34m> Installation de Python...\033[0m"
+pkg install python -y || { echo -e "\033[1;31mErreur: Python n'a pas pu être installé !\033[0m"; exit 1; }
 
-# Mise à jour
-echo -e "\e[1;34m[•] Mise à jour Termux...\e[0m"
-pkg update -y && pkg upgrade -y
+echo -e "\033[1;36m> Installation de Git...\033[0m"
+pkg install git -y || { echo -e "\033[1;31mErreur: Git n'a pas pu être installé !\033[0m"; exit 1; }
 
-# eto aho no milance an sys
-echo -e "\e[1;34m[•] Installation des paquets système requis...\e[0m"
-pkg install -y clang python fftw libzmq freetype libpng pkg-config libjpeg-turbo zlib sqlite ncurses-utils rust termux-tools
+echo -e "\033[1;35m> Installation de libjpeg-turbo et zlib...\033[0m"
+pkg install libjpeg-turbo zlib -y || { echo -e "\033[1;31mErreur: libjpeg-turbo ou zlib n'ont pas pu être installés !\033[0m"; exit 1; }
 
-echo -e "\e[1;34m[•] Mise à jour pip, setuptools, wheel...\e[0m"
-pip install --upgrade pip setuptools wheel
-
-is_pip_installed() {
-    python3 -c "import $1" >/dev/null 2>&1
-}
-
-declare -A MODULES
-MODULES=(
-    [numpy]="numpy"
-    [pillow]="PIL"
-    [rich]="rich"
-    [termcolor]="termcolor"
-    [telethon]="telethon"
-    [requests]="requests"
-    [instagrapi]="instagrapi"
-    [instaloader]="instaloader"
-    [certifi]="certifi"
-)
-
-declare -A MODULES_VERSION
-MODULES_VERSION=(
-    [numpy]="numpy==1.26.4"
-    [pillow]="pillow>=9.5.0"
-    [rich]="rich>=13.7.1"
-    [termcolor]="termcolor>=2.4.0"
-    [telethon]="telethon>=1.34.0"
-    [requests]="requests>=2.31.0"
-    [instagrapi]="instagrapi==1.16.0"
-    [instaloader]="instaloader>=4.10"
-    [certifi]="certifi>=2024.2.2"
-)
-
-for module in "${!MODULES[@]}"; do
-    import_name="${MODULES[$module]}"
-    echo -e "\e[1;34m[•] Vérification de $module...\e[0m"
-    if is_pip_installed "$import_name"; then
-        echo -e "\e[1;32m[✓] $module déjà installé, aucune action nécessaire.\e[0m"
-    else
-        echo -e "\e[1;33m[→] Installation de $module...\e[0m"
-        if [ "$module" = "numpy" ]; then
-            LDFLAGS=" -lm -lcompiler_rt" pip install --no-cache-dir --no-build-isolation "${MODULES_VERSION[$module]}"
-        else
-            pip install --no-cache-dir --no-build-isolation "${MODULES_VERSION[$module]}"
-        fi
-
-        if is_pip_installed "$import_name"; then
-            echo -e "\e[1;32m[✓] $module installé avec succès.\e[0m"
-        else
-            echo -e "\e[1;31m[✗] Échec d'installation de $module.\e[0m"
-        fi
-    fi
-done
-# Autorisation 
-echo -e "\e[1;34m[•] Autorisation du stockage...\e[0m"
+# Autorisation de stockage
+echo -e "\033[1;33m> Autorisation de stockage...\033[0m"
 termux-setup-storage
 
-python -c "from instagrapi import Client; print('✅ instagrapi fonctionnel')" 2>/dev/null
+# Liste des modules Python à installer
+MODULES="telethon rich pillow termcolor requests instagrapi"
 
-if [ $? -eq 0 ]; then
-    termux-toast -g bottom "✅ Environnement TS prêt"
-    echo -e "\e[1;32m[✅] Environnement TS installé avec succès.\e[0m"
-else
-    termux-toast -g bottom "⚠️ TS prêt mais instagrapi a échoué"
-    echo -e "\e[1;31m[⚠️] TS installé, mais instagrapi non fonctionnel.\e[0m"
-fi
-
-echo -e "\e[1;34m[•] Rend les scripts et binaires exécutables...\e[0m"
-set_executable_rights() {
-    local thisdir
-    thisdir="$(dirname "$(realpath "$0")")"
-    for f in "$thisdir"/*.sh "$thisdir"/*.py "$thisdir"/*.bin; do
-        [ -e "$f" ] && chmod +x "$f"
-    done
-}
-set_executable_rights
-
-sleep 2
-clear
-
-echo -e "\e[1;32m[✅] Environnement prêt. Vous pouvez lancer vos scripts TS maintenant.\e[0m"
-
-if [ -d "TS" ]; then
-    cd TS
-    if [ -f "authorisation.py" ]; then
-        echo -e "\e[1;34m[•] Lancement de authorisation.py...\e[0m"
-        python3 authorisation.py
-    fi
-    if [ -f "ts.bin" ]; then
-        echo -e "\e[1;34m[•] Lancement de ts.bin...\e[0m"
-        ./ts.bin
+# Fonction pour installer et vérifier un module Python
+install_module() {
+    module=$1
+    echo -e "\033[1;32mInstallation de $module...\033[0m"
+    pip install $module
+    python -c "import $module" 2>/dev/null
+    if [ $? -eq 0 ]; then
+        python - <<END
+from rich.console import Console
+console = Console()
+console.print(":white_check_mark: [bold green]$module installé avec succès[/bold green]")
+END
     else
-        echo -e "\e[1;33m[⚠️] ts.bin non trouvé dans TS.\e[0m"
+        python - <<END
+from rich.console import Console
+console = Console()
+console.print(":x: [bold red]Erreur : $module n'a pas pu être importé après installation ![/bold red]")
+END
+        exit 1
     fi
-else
-    echo -e "\e[1;33m[⚠️] Dossier TS non trouvé, aucun lancement automatique effectué.\e[0m"
-fi
+}
+
+# Installation et vérification de chaque module
+for m in $MODULES; do
+    install_module $m
+done
+
+# Récapitulatif coloré en Python avec rich
+python - <<END
+from rich.console import Console
+console = Console()
+console.print("[bold green]Installation terminée. Toutes les dépendances nécessaires sont installées (instagrapi inclus) ![/bold green]")
+END
