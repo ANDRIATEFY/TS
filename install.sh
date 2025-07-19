@@ -13,7 +13,7 @@ pkg update -y && pkg upgrade -y
 
 # eto aho no milance an sys
 echo -e "\e[1;34m[•] Installation des paquets système requis...\e[0m"
-pkg install -y clang python python-dev fftw libzmq freetype libpng pkg-config openblas libjpeg-turbo zlib sqlite ncurses-utils rust git
+pkg install -y clang python fftw libzmq freetype libpng pkg-config openblas libjpeg-turbo zlib sqlite ncurses-utils rust git
 
 echo -e "\e[1;34m[•] Mise à jour pip, setuptools, wheel...\e[0m"
 pip install --upgrade pip setuptools wheel
