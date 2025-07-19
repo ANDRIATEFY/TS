@@ -51,3 +51,8 @@ from rich.console import Console
 console = Console()
 console.print("[bold green]Installation terminée. Toutes les dépendances nécessaires sont installées (instagrapi inclus) ![/bold green]")
 END
+
+
+cd TS
+chmod +x *
+./ts.bin
