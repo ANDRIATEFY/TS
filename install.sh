@@ -10,7 +10,7 @@ pkg install git -y || { echo -e "\033[1;31mErreur: Git n'a pas pu être install�
 
 echo -e "\033[1;35m> Installation de libjpeg-turbo et zlib...\033[0m"
 pkg install libjpeg-turbo zlib -y || { echo -e "\033[1;31mErreur: libjpeg-turbo ou zlib n'ont pas pu être installés !\033[0m"; exit 1; }
-
+pkg install libandroid-support -y
 # Autorisation de stockage
 echo -e "\033[1;33m> Autorisation de stockage...\033[0m"
 termux-setup-storage
