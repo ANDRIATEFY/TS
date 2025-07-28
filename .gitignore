@@ -3,6 +3,6 @@
 **/*.sqlite
 **/*.sqlite3
 **/*.session
-**/settings*.json
+**/**/set_*.json
 !.gitignore
-!config/default.json
+!**/**/*.json
