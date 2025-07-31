@@ -19,7 +19,7 @@ echo -e "\033[1;33m> Autorisation de stockage...\033[0m"
 termux-setup-storage
 
 # Liste des modules Python à installer avec versions compatibles
-MODULES="telethon==1.35.0 rich==13.7.1 pillow==10.3.0 termcolor==2.4.0 requests==2.31.0 instagrapi<2"
+MODULES="telethon rich pillow==10.3.0 termcolor requests instagrapi<2"
 FAILED_MODULES=()
 SUCCESS_MODULES=()
 
