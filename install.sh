@@ -66,7 +66,6 @@ else
 from rich.console import Console
 console = Console()
 console.print("\n[bold yellow]Installation terminée. Les modules suivants n'ont pas pu être importés :[/bold yellow]")
-console.print("[bold red]${FAILED_MODULES[@]}[/bold red]\n")
 END
 fi
 
